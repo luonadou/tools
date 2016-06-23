@@ -3,9 +3,63 @@
 	<head>
 		<link rel="stylesheet" href="">
 		<script src="underscore.js"></script>
+		<script src="jquery-1.7.2.min.js"></script>
+		<style>
+
+		html,body{
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height:100%;
+		}
+		#myCanvas{
+			width: 100%;
+			height: 100%;
+		}
+		#footer{
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 120px;
+			background: green;
+		}
+		</style>
 	</head>
 	<body>
+		<canvas id="myCanvas"></canvas>
+		<div id="footer"></div>
+		<script type="text/javascript">
+			var canvas=document.getElementById("myCanvas");
+			var cxt=canvas.getContext("2d");			
+			function resizeCanvas() {
+				var canvas=$("#myCanvas");
+		        canvas.attr("width", document.body.offsetWidth); 
+		        canvas.attr("height", document.body.offsetHeight); 
+		        cxt.rect(0, 0, canvas.width(), canvas.height()); 
+		        cxt.fillStyle="#fff";
+		        cxt.fill();
+			 };  
+			 resizeCanvas();  
+		</script>
+
 		<script>
+			//冒泡排序
+			var orderArr = [5,1,6,3,9],
+			    i,
+			    j,
+			    middle,
+			    len = orderArr.length;
+
+			for(i=0;i<len;i++){
+				for(j=i+1;j<len;j++){
+					if(orderArr[i]>orderArr[j]){
+						middle = orderArr[i];
+						orderArr[i] = orderArr[j];
+						orderArr[j] = middle
+					}
+				}
+			}
+			console.log(orderArr);
 			// _.each([1,2,3],function(i){console.log(this.name+" "+i)},{name:"test"})
 		</script>		
 	</body>

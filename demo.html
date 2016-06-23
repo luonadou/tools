@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="">
+		<script src="underscore.js"></script>
+		<script src="jquery-1.7.2.min.js"></script>
+		<style>
+
+		html,body{
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height:100%;
+		}
+		#myCanvas{
+			width: 100%;
+			height: 100%;
+		}
+		#footer{
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 200px;
+			background: url(bottom.png) no-repeat bottom center;
+			background-size: 130% 100%;
+		}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas"></canvas>
+		<div id="footer"></div>
+		<script type="text/javascript">
+			var canvas=document.getElementById("myCanvas");
+			var ctx=canvas.getContext("2d");			
+			function resizeCanvas() {
+				var canvas=$("#myCanvas");
+				var width = document.body.offsetWidth,height = document.body.offsetHeight,r0;
+				width>height?r0 = width:r0= height;
+		        canvas.attr("width", width); 
+		        canvas.attr("height", height); 
+		  //       var grd=cxt.createRadialGradient(width/2,height/2,5,width/2,height/2,r0/2);
+				// grd.addColorStop(0,"#BAC3FA");
+				// grd.addColorStop(1,"#030B3A");
+				// cxt.fillStyle=grd;
+				// cxt.fillRect(0,0,width,height);
+			};  
+			resizeCanvas();
+			var drawTree = function (ctx, startX, startY, length, angle, depth, branchWidth) {
+                var rand = Math.random,
+                        newLength, newAngle, newDepth, maxBranch = 3,
+                        endX, endY, maxAngle = 2 * Math.PI / 4,
+                        subBranches, lenShrink;
+                // 分枝向左还是向右，主要是取决于角度 angle
+                // 树根绘制角度为 π/2 （即绘制方向竖直向上）
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                endX = startX + length * Math.cos(angle);
+                endY = startY + length * Math.sin(angle);
+
+                ctx.lineCap = 'round';
+                ctx.lineWidth = branchWidth;
+                ctx.lineTo(endX, endY);
+
+                // 如果到达了树枝的末端，就把描边的颜色改为绿色
+                if (depth <= 2) {
+                    ctx.strokeStyle = 'rgb(0,' + (((rand() * 64) + 128) >> 0) + ',0)';
+                }
+                // 否则就把颜色改为树干的颜色
+                else {
+                    ctx.strokeStyle = 'rgb(' + (((rand() * 64) + 64) >> 0) + ',50,25)';
+                }
+                ctx.stroke();
+
+                // 减小分枝的递归次数
+                newDepth = depth - 1;
+                // 如果分枝的递归次数为零，则直接退出
+                if (!newDepth) {
+                    return;
+                }
+                // 当前树干分支分1~3枝
+                // 加入一些随机的长度、宽度和角度看起来更加自然。
+                if(depth <= 2){
+                	subBranches = (rand() * (maxBranch - 1)) - 1;
+                }else{
+                	subBranches = (rand() * (maxBranch - 1)) + 1;
+                }
+                
+                // 减小分枝的宽度
+                branchWidth *= 0.7;
+                // 递归调用drawTree函数，产生新的分枝
+                for (var i = 0; i < subBranches; i++) {
+                    newAngle = angle + rand() * maxAngle - maxAngle * 0.5;
+                    newLength = length * (0.7 + rand() * 0.3);
+                    drawTree(ctx, endX, endY, newLength, newAngle, newDepth, branchWidth);
+                }
+            };  
+            var width = document.body.offsetWidth,height = document.body.offsetHeight;
+            drawTree(ctx, width/2, height-60, 150, -Math.PI /2, 12, 40)
+		</script>
+
+		<script>
+			//鍐掓场鎺掑簭
+			var orderArr = [5,1,6,3,9],
+			    i,
+			    j,
+			    middle,
+			    len = orderArr.length;
+
+			for(i=0;i<len;i++){
+				for(j=i+1;j<len;j++){
+					if(orderArr[i]>orderArr[j]){
+						middle = orderArr[i];
+						orderArr[i] = orderArr[j];
+						orderArr[j] = middle
+					}
+				}
+			}
+			console.log(orderArr);
+			// _.each([1,2,3],function(i){console.log(this.name+" "+i)},{name:"test"})
+		</script>		
+	</body>
+</html>
